@@ -1,6 +1,6 @@
 package recipes.util;
 
 public enum Action {
-	CUT, CRUSH, PULVERIZE, SQUEEZE;
+	BATTER, CRUSH, CUT,  FREEZE, MELT, PULVERIZE, SQUEEZE;
 	
 }

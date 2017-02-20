@@ -17,9 +17,13 @@ public class Executor {
 	private static void build(){
 		if(!build){
 			actions = new HashMap<recipes.util.Action, recipes.action.Action>();
+			actions.put(Action.BATTER		, new Batter());
 			actions.put(Action.CUT			, new Cut());
 			actions.put(Action.CRUSH		, new Crush());
+			actions.put(Action.FREEZE		, new Freeze());
+			actions.put(Action.MELT			, new Melt());
 			actions.put(Action.PULVERIZE	, new Pulverize());
+			actions.put(Action.SQUEEZE		, new Squeeze());
 			build = true;
 		}
 		

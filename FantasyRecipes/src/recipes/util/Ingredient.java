@@ -42,9 +42,18 @@ public class Ingredient implements Serializable, Cloneable{
 	
 	
 	public String toString(){
-		String a = String.format("%s %s", this.state.toString(), this.base).replaceAll("\\s+", " ").trim();
+		String pre = "";
+		if(!attributes.isEmpty()){
+			for(String i : attributes){
+				pre += " "+ i + ",";
+			}
+			pre = pre.trim();
+			pre = pre.replaceAll(",\\$", "");
+		}
 		
-		return a;
+		String a = String.format("%s %s", this.state.toString(), this.base);
+		String result = (pre + " " + a).replaceAll("\\s+", " ").trim();
+		return result;
 	}
 	public String getBase(){
 		return this.base;
@@ -110,6 +119,13 @@ public class Ingredient implements Serializable, Cloneable{
 		this.attributes.set(i, newAtt);
 		return this;
 	}
+	public Ingredient removeAttribute(String old){
+		int i = this.attributes.indexOf(old);
+		if(i != -1){
+			this.attributes.remove(i);
+		}
+		return this;
+	}
 	/**
 	 * Sets the addition to a specific value;
 	 * @param addition
@@ -122,5 +138,8 @@ public class Ingredient implements Serializable, Cloneable{
 		this.addAddition("");
 		return this;
 	}
-	
+	public Ingredient setBase(String base){
+		this.base = base;
+		return this;
+	}
 }

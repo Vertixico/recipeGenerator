@@ -1,0 +1,124 @@
+Random Recipe generator.
+
+Basic Agorithm:
+
+- Create a list of more or less random ingredients
+- Create a list of preparation steps, which should always include at least
+	- preparation of igredients
+		- washing, cutting, cookig, crushing, mixing etc
+		- create groups of ingrediets forming something together
+		- crates ggf new products and "eleminates" others
+		- Stp might demand the usage of a tool
+	- processing prepared ingrediets
+		 Cooking simmering, heating, cooling, freezing, 
+	- presenting
+		- Arrange, serve etc
+		- Use things as base, sauce or decoration
+		- Always have a base
+		- Might contain information about seasoning
+Ingredient:
+<Attributes> <State> <Base Ingredient> <with Additions>
+<List of Enum>, <Enum>, <String>, <String>
+
+Basic thought: An ingredient is either solid, liquid or container but in different states and it can be prepared
+Prepartion Steps:
+	- Cut
+	- Crush
+	- Batter
+	- Freeze
+	- Melt
+	- Grate
+
+-------------------------------------------------------------------------------------------------------
+
+Solid states:	(Whole, Pieces of, Chopped, Crystallized, Frozen)
+- Whole X 		+ Cut 		-> Pieces of X
+- Pieces of X 	+ Cut 		-> Chopped X
+- Chopped X 	+ Cut 		-> Minced X
+- Whole X 		+ Crush 	-> Mashed X
+- <Solid> X 	+ Pulverize -> Pulverized X
+- Whole X 		+ Grate 	-> Grated X
+- Grated X 		+ Cut 		-> Minced X
+- Grated X 		+ Crush 	-> Mashed X 
+- <Solid> X		+ Squeeze	-> Juice of X + Mashed X
+
+Crushed states: (Minced, Pulverized, Grated, Crushed)
+
+Neutral Attribute Giving (Fun step in preparation to make it somewhat special)
+- X 			+ Wash 		-> Washed X
+- X 			+ Bless 	-> Blessed X
+
+"Liquid" States: (Liquid, Creamy, Foamy, Mashed, Juice of)
+- Liquid X 		+ Batter 	-> Creamy X
+- Creamy X 		+ Batter 	-> Foamy X
+- Foamy X 		+ Batter	-> Stocked Y 		
+- Solid X 		+ Melt 		-> Liquid X
+- Creamy X 		+ Freeze 	-> (sparkly) Crystallized X 	
+- Foamy X 		+ Freeze 	-> Crystallized X	
+- Liquid X 		+ Freeze 	-> Frozen X			
+
+Inedibles
+- Can be prepared as solid but can not be mixed, only used as decoration
+- Or pulverized into something, but that should have some attribute sideffect
+- Hide, Peel, Core, Bone
+- Can be discarded
+
+"Containers" (Eggs, Fruits, Bodies, Bodypart, Organ)
+- MUST be prepared, cannot be mixed!
+
+- Fruit X + Cut				-> Flesh of X + Core of X + Peel of X
+- Fruit	X + Crush			-> Mashed X + Juice of X
+- Body X + Dissect			-> <inedible> Hide of X + (raw) <whole> Heart of X + (raw) <whole> Liver of X + (raw) <whole> Flesh of X + <inedible> Bones of X + <liquid> Blood of X + <whole> Brains of X
+- Bodypart Y of X + Dissect	-> Flesh of X + Blood of X
+- Organ Y of X + Dissect 	-> Pieces of Y of X + Blood of X 	
+- Egg of X + Crush			-> Yolk of X-eggs
+
+----------------------
+
+Mixing Steps:
+- Solid X + Solid Y 	-> X with Y	
+- Solid X + Crushed Y 	-> (seasoned) X seasoned with Y
+- Solid X + Liquid Y	-> (soaked) Y-soaked X
+- Crushed X + Crushed Y -> X-Y Blend
+- Crushed X + Liquid Y 	-> (raw) X Dough of Y			
+- Liquid X + Crushed Y	-> (seasoned) X seasoned with Y	
+- Liquid X + Solid Y	-> X with added Y
+- Liquid X + Liquid Y	-> X-Y Mixture
+--- Further more specific "mixing" steps can lead to salads, stews etc. Giving the raw modifier / flag to force further building
+
+How will the algorithm work?
+It first creates the recipe with amounts of ingrdients.
+
+Each step is 
+<List of Ingredients>, Action -> <List of Ingredients>, <Description>
+When it prepares the step it also creates the description of the step and adds it to th "recipe". If that is an action that is not planned, try at most two times again and then either create a "stupid description" or discard that action
+or
+Action is of Typ Preparation, Mixing, Making and Arranging. Action can be a List of Actions in one category.
+
+A Recipy is a random List of steps:
+- Create a list of 3 to 7 ingredients
+- Each ingredient starts with the attribute "unprepared"
+
+- For each Ingredient do at least one action of Preparation (but there are neutral ones too)
+- Keep at maximum 3 unsuccessfull "stupid prepation step"
+- Repeat till there are no unprepared Actions.
+
+- Do random number of Mixing Steps that at least 3 ingredients are left
+- Any unmixed ingredient can be discarded
+
+- For each ingredient choose at least one making step
+	Cooking, Frying, Boiling, Deep Frying, Choc Freezing, Simmering, Gratinating, Backing
+	Usually only adds the attribute and replaces "raw"
+	Special Cases: 
+		X-Dough of Y + Bake ->  X-Bread of Y
+		X-dough of Y + Frying -> X-Pancakes of Y
+		Pieces of X + Frying -> Fried Strips of X
+
+Step by step: Create the various versions of States Enum State Solid, Crushed, Liquid, Inedible
+class IngredientState{
+	var name;		//
+	var superState;	//if this is null, this is a super state
+	public function __construct(String name){
+		self::name = name;
+	}
+}

@@ -36,7 +36,7 @@ public class Cut implements Action, PreparationStep{
 			String base = in.getBase();
 			switch(state){
 			case BODY:
-				out.add(new Ingredient(in).setBase("Hide of "+base)
+				out.add(new Ingredient(in).setBase(base)
 						.addAttribute("unmeltable")
 						.setState(Inedible.HIDE));
 				out.add(new Ingredient(in).setBase(base+"'s meat")
@@ -64,7 +64,7 @@ public class Cut implements Action, PreparationStep{
 				out.add(new Ingredient(in).setBase("bones of a "+base)
 						.addAttribute("unmeltable")
 						.setState(Inedible.BONE));
-				out.add(new Ingredient(in).setBase(base + "'s claws")
+				out.add(new Ingredient(in).setBase(base)
 						.addAttribute("unmeltable")
 						.setState(Inedible.CLAW));
 				out.add(new Ingredient(in).setBase(base + "'s skull")
@@ -72,7 +72,7 @@ public class Cut implements Action, PreparationStep{
 						.setState(Inedible.BONE));
 				break;
 			case FRUIT:
-				out.add(new Ingredient(in).setBase("flesh of "+base)
+				out.add(new Ingredient(in)
 						.setState(Solid.WHOLE)
 						);
 				out.add(new Ingredient(in).setBase("core of "+base)

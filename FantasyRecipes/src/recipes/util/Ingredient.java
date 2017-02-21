@@ -2,7 +2,9 @@ package recipes.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 
 import recipes.enums.*;
 /**
@@ -42,10 +44,15 @@ public class Ingredient implements Serializable, Cloneable{
 	
 	
 	public String toString(){
+		String[] doNotShow = {"unmeltable", "raw", "oily", "salty"};
+		ArrayList<String> hide	=  new ArrayList<String>(Arrays.asList(doNotShow));
+		
 		String pre = "";
 		if(!attributes.isEmpty()){
 			for(String i : attributes){
-				pre += " "+ i + ",";
+				if(!hide.contains(i)){
+					pre += " "+ i + ",";
+				}
 			}
 			pre = pre.trim();
 			pre = pre.replaceAll(",\\$", "");
@@ -142,4 +149,47 @@ public class Ingredient implements Serializable, Cloneable{
 		this.base = base;
 		return this;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((addition == null) ? 0 : addition.hashCode());
+		result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
+		result = prime * result + ((base == null) ? 0 : base.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Ingredient))
+			return false;
+		Ingredient other = (Ingredient) obj;
+		if (base == null) {
+			if (other.base != null)
+				return false;
+		} else if (!base.equals(other.base))
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.toString().equals(other.state.toString()))
+			return false;
+		if (addition == null) {
+			if (other.addition != null)
+				return false;
+		} else if (!addition.equals(other.addition))
+			return false;
+		if (attributes == null) {
+			if (other.attributes != null)
+				return false;
+		} else if (!attributes.equals(other.attributes))
+			return false;
+		
+		return true;
+	}
+	
 }

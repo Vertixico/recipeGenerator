@@ -29,7 +29,7 @@ public class Executor {
 			actions.put(Action.SHAKE		, new Shake());
 			actions.put(Action.SHAME		, new Shame());
 			actions.put(Action.SQUEEZE		, new Squeeze());
-			actions.put(Action.STIRR, new Stirr());
+			actions.put(Action.STIRR		, new Stirr());
 			build = true;
 		}
 		
@@ -41,6 +41,19 @@ public class Executor {
 		
 		input.add(i);
 		if(actions.containsKey(a))
+			output.addAll(actions.get(a).apply(input));
+		
+		if(output.isEmpty())	return input;
+		return output;
+	}
+	public static List<Ingredient> mix(Ingredient i, Ingredient j, Action a){
+		build();
+		List<Ingredient> input = new ArrayList<Ingredient>();
+		List<Ingredient> output = new ArrayList<Ingredient>();
+		
+		input.add(i);
+		input.add(j);
+		if(actions.containsKey(a) && actions.get(a) instanceof MixingStep)
 			output.addAll(actions.get(a).apply(input));
 		
 		if(output.isEmpty())	return input;
